@@ -5,7 +5,20 @@ import searchAnime from './requests';
 import './App.css';
 
 
+const FormSearch = styled(Form) `
+  display: flex;
+`;
+
 const Input = styled(Field)`
+  margin-left: 30px;
+  margin-top: 50px;
+  padding: 10px;
+  border: none;
+  background-color: #ffffff8f;
+  outline: none;
+  border-radius: 20px;
+  width: 180px;
+  padding-left: 40px;
 `;
 
 const Img = styled.img ` 
@@ -30,24 +43,22 @@ const Grid = styled.div`
   ::-webkit-scrollbar-thumb
   {
     border-radius: 10px;
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
-    background-color: #D62929;
+    box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: #b329d6;
   }
 `;
 
 const Container = styled.div`
   width: 300px;
-  height: 500px;
+  height: 600px;
   background-image: url('http://giphygifs.s3.amazonaws.com/media/13ZzYXkeIjcZy0/giphy.gif');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
-  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
-  margin-bottom: -50px;
-  padding-bottom: 50px;
 `;
+
 const Main = styled.div`
-  background-color: white;
+  margin-bottom: -100px;
 `;
 
 function App() {
@@ -77,7 +88,7 @@ function App() {
       }}
     >
       {(formik) => (
-        <Form>
+        <FormSearch>
           <Input 
             type="query" 
             name="query" 
@@ -90,7 +101,7 @@ function App() {
                 setResults();
               }
             }}/>
-        </Form>
+        </FormSearch>
       )}
     </Formik> 
     {load && (
@@ -101,9 +112,8 @@ function App() {
         <>
           {results && (
             results.map(result => {
-              console.log(result)
               return (
-                <Img src={result.image_url}/>
+                <Img key={result.mal_id} src={result.image_url}/>
               )
             })
           )}
