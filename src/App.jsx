@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/accessible-emoji */
 import React, { useState, useEffect} from 'react';
 import { Formik, Form, Field } from 'formik';
 import styled from 'styled-components';
@@ -7,17 +8,17 @@ import './App.css';
 
 const FormSearch = styled(Form) `
   display: flex;
+  justify-content: center;
 `;
 
 const Input = styled(Field)`
-  margin-left: 30px;
   margin-top: 50px;
   padding: 10px;
   border: none;
   background-color: #ffffff8f;
   outline: none;
   border-radius: 20px;
-  width: 180px;
+  width: 160px;
   padding-left: 40px;
 `;
 
@@ -35,6 +36,7 @@ const Grid = styled.div`
   grid-gap: 12px;
   height: 500px;  
   overflow: auto;
+  overflow-x: hidden;
   ::-webkit-scrollbar
   {
     width: 5px;
@@ -61,11 +63,38 @@ const Main = styled.div`
   margin-bottom: -100px;
 `;
 
+const DetailCard = styled.div`
+  width: 100px;  
+  background-color: #ffffffd4;
+  padding-left: 22px;  
+  padding-right: 20px;  
+  padding-top: -1px;  
+  border-radius: 10px;
+`;
+
+const Text = styled.p`
+  font-family: inherit;
+  font-size: 12px;
+  margin-bottom: -5px;
+`;
+
+const TextButton = styled.p`
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  padding-top: 60px;
+  :hover{
+    color: green;
+  }
+`;
+
 function App() {
   const [query, setQuery] = useState();
   const [load, setLoad] = useState();
   const [results, setResults] = useState();
   useEffect(() => {
+    window.localStorage.setItem('list', JSON.stringify([{a:'aaa'},{b:'bbb'}]))    
+    console.log(window.localStorage.getItem('list'))
     if(query !== undefined) {
       searchAnime(query)
       .then(response => {
@@ -113,7 +142,20 @@ function App() {
           {results && (
             results.map(result => {
               return (
-                <Img key={result.mal_id} src={result.image_url}/>
+                <React.Fragment key={result.mal_id}>
+                  <Img src={result.image_url}/>
+                  <DetailCard> 
+                    <Text>{result.title}</Text>
+                    <Text>Score: {result.score} ⭐</Text>                
+                    <Text>Episodes: {result.episodes}</Text>                  
+                    {result.rated === 'Rx' && (
+                      <Text>18 + 😈</Text>
+                    )}
+                    <TextButton>
+                    💻 Watch Later
+                    </TextButton>
+                  </DetailCard>
+                </React.Fragment>
               )
             })
           )}
