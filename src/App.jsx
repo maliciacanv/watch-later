@@ -6,10 +6,6 @@ import './App.css';
 
 
 const Input = styled(Field)`
-  display: flex;
-  justify-self: center;
-  margin-top: 10px;
-  width: 80%;
 `;
 
 const Img = styled.img ` 
@@ -39,6 +35,21 @@ const Grid = styled.div`
   }
 `;
 
+const Container = styled.div`
+  width: 300px;
+  height: 500px;
+  background-image: url('http://giphygifs.s3.amazonaws.com/media/13ZzYXkeIjcZy0/giphy.gif');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+  margin-bottom: -50px;
+  padding-bottom: 50px;
+`;
+const Main = styled.div`
+  background-color: white;
+`;
+
 function App() {
   const [query, setQuery] = useState();
   const [load, setLoad] = useState();
@@ -57,7 +68,8 @@ function App() {
   
 
   return (
-    <div className="Container"> 
+    <Main>
+    <Container> 
      <Formik
       initialValues={{ query: ''}}
       onSubmit={(values) => {
@@ -72,6 +84,11 @@ function App() {
             onChange={event => {
               formik.setFieldValue('query', event.target.value)
               //setQuery(formik.values.query)
+              if(event.target.value === '' 
+              || event.target.value === null
+              || event.target.value === undefined) {
+                setResults();
+              }
             }}/>
         </Form>
       )}
@@ -93,7 +110,8 @@ function App() {
         </>
       )}    
     </Grid>    
-    </div>
+    </Container>
+    </Main>
   );
 }
 
