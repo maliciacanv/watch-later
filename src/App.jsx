@@ -12,14 +12,17 @@ const FormSearch = styled(Form) `
 `;
 
 const Input = styled(Field)`
-  margin-top: 50px;
+  margin-top: 30px;
   padding: 10px;
   border: none;
   background-color: #ffffff8f;
   outline: none;
   border-radius: 20px;
-  width: 160px;
+  width: 180px;
   padding-left: 40px;
+  ::placeholder {
+    color: black;
+  }
 `;
 
 const Img = styled.img ` 
@@ -34,7 +37,7 @@ const Grid = styled.div`
   margin: 0 auto;  
   grid-template-columns: repeat(2, 1fr);  
   grid-gap: 12px;
-  height: 500px;  
+  height: 400px;  
   overflow: auto;
   overflow-x: hidden;
   ::-webkit-scrollbar
@@ -53,7 +56,7 @@ const Grid = styled.div`
 const Container = styled.div`
   width: 300px;
   height: 600px;
-  background-image: url('http://giphygifs.s3.amazonaws.com/media/13ZzYXkeIjcZy0/giphy.gif');
+  background-image: url("https://i.pinimg.com/originals/59/cc/7e/59cc7e80a5bf8dfb0c959529b9f3e5de.gif");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
@@ -88,6 +91,26 @@ const TextButton = styled.p`
   }
 `;
 
+const CloseButton = styled.div`
+  display: flex;  
+  visibility: visible;
+  ${props => !props.dsp && `visibility: hidden;`}
+  justify-content: flex-end;
+  font-size: 20px;
+  padding-right: 15px;
+  cursor: pointer;  
+  color: white;
+  :hover{
+    color: red;
+  }
+`;
+
+const Donate = styled.div`
+  padding-top: 10px;
+  display: flex;
+  justify-content: center;
+`;
+
 function App() {
   const [query, setQuery] = useState();
   const [load, setLoad] = useState();
@@ -110,15 +133,25 @@ function App() {
   return (
     <Main>
     <Container> 
+      <Donate>
+        <a href="https://www.buymeacoffee.com/49IBUXA" rel="noopener noreferrer" target="_blank">
+            <img src="https://bmc-cdn.nyc3.digitaloceanspaces.com/BMC-button-images/custom_images/orange_img.png" alt="Buy Me A Coffee" 
+          style={{
+              height: 'auto !important',
+              width: 'auto !important'
+            }}/>
+        </a>
+      </Donate>              
      <Formik
-      initialValues={{ query: ''}}
+      initialValues={{ query }}
       onSubmit={(values) => {
         setQuery(values.query)
       }}
     >
       {(formik) => (
-        <FormSearch>
+        <FormSearch>             
           <Input 
+            placeholder="Search an anime ..."
             type="query" 
             name="query" 
             onChange={event => {
@@ -129,14 +162,19 @@ function App() {
               || event.target.value === undefined) {
                 setResults();
               }
-            }}/>
+            }}/>            
+            {load && (
+              <h1> Carregando </h1>
+            )}
         </FormSearch>
       )}
-    </Formik> 
-    {load && (
-      <h1> Carregando </h1>
-    )}
-    <Grid>
+    </Formik>     
+    <CloseButton
+        dsp={results && true}
+        onClick={() => setResults()}>
+            x
+      </CloseButton>  
+    <Grid>         
       {!load && (
         <>
           {results && (
@@ -151,7 +189,8 @@ function App() {
                     {result.rated === 'Rx' && (
                       <Text>18 + 😈</Text>
                     )}
-                    <TextButton>
+                    <TextButton 
+                    onClick={ () => {console.log(result.title)}}>
                     💻 Watch Later
                     </TextButton>
                   </DetailCard>
@@ -161,7 +200,7 @@ function App() {
           )}
         </>
       )}    
-    </Grid>    
+    </Grid>        
     </Container>
     </Main>
   );
